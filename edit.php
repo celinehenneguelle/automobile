@@ -22,23 +22,23 @@ if (isset($_POST["make"]) && isset($_POST["model"]) && isset($_POST["year"]) && 
  if (!empty(trim($_POST["make"])) && !empty(trim($_POST["model"])) && !empty(trim($_POST["year"])) && !empty(trim($_POST["mileage"]))) {
  if (!is_numeric($_POST["year"])) {
  $_SESSION["error"] = "L'année doit être numérique";
- header("Location: edit.php?autos_id=".$_REQUEST['id']);
+ header("Location: edit.php?autos_id=".$_REQUEST['autos_id']);
 return;
 
  } else if (!is_numeric($_POST["mileage"])) {
  $_SESSION["error"] = "Le kilométrage doit être numérique";
- header("Location: edit.php?autos_id=".$_REQUEST['id']);
+ header("Location: edit.php?autos_id=".$_REQUEST['autos_id']);
  return;
 
  } else {
-$sql = "UPDATE autos SET make=:make, model=:model, year=:year, mileage=:mileage WHERE autos_id = {$_SESSION["autos_id"]}  ";
+$sql = "UPDATE autos SET make=:make, model=:model, year=:year, mileage=:mileage WHERE autos_id = :autos_id  ";
 $stmt = $pdo->prepare($sql);
  $stmt->execute([
 ":make" => $_POST["make"],
  ":model" => $_POST["model"], 
  ":year" => $_POST["year"],
  ":mileage"=>$_POST["mileage"],
-    
+    ":autos_id" => $_GET["autos_id"],
  ]);
 
  $_SESSION["success"] = "Enregistrement edité";
@@ -48,7 +48,7 @@ $stmt = $pdo->prepare($sql);
  
 } else {
 $_SESSION["error"] = "Tous les champs sont requis";
- header("Location: edit.php?autos_id=".$_REQUEST['id']);
+ header("Location: edit.php?autos_id=".$_REQUEST['autos_id']);
 return;
 }
 }
@@ -58,7 +58,7 @@ return;
 $sql = "SELECT * FROM autos WHERE  autos_id = :autos_id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
-":autos_id" =>$_SESSION["autos_id"],
+":autos_id" =>$_GET["autos_id"],
 ]);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 

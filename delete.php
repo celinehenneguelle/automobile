@@ -18,7 +18,7 @@ $stmt = $pdo->prepare($sql);
  "autos_id" => $_GET["autos_id"]
 ]);
 $_SESSION["success"] = "Enregistrement supprimé";
-header("Location: ./app.php");
+header("Location: ./index.php");
  return;
 }
 
